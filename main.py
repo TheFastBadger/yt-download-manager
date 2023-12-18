@@ -1,35 +1,37 @@
-from pytube import YouTube, Playlist
-from time import sleep
+import kivy
+from kivy.app import App
+from kivy.uix.label import Label
+from kivy.uix.gridlayout import GridLayout
+from kivy.uix.textinput import TextInput
+from kivy.uix.button import Button
+import manager
+
+class InputGrid(GridLayout):
+    def __init__(self, **kwargs):
+        super(InputGrid, self).__init__(**kwargs)
+
+        self.cols = 2
+
+        self.add_widget(Label(text="Url:"))
+
+        self.url = TextInput(multiline=False)
+        self.add_widget(self.url)
+
+        self.submit = Button(text="Submit", font_size=32)
+        self.submit.bind(on_press=self.press)
+        self.add_widget(self.submit)
+
+    def press(self, instance):
+        url = self.url.text
+
+        if "watch?v" in url:
+            manager.download_video(url, 22)
+        elif "playlist?list" in url:
+            manager.download_playlist(url, 22)
+class ManagerApp(App):
+    def build(self):
+        return InputGrid()
 
 
-def download_playlist(p, q):
-    # q = 22
-    p = Playlist(p)
-    print(f'Downloading: {p.title}')
-    for video in p.videos:
-        print(video.title)
-        sleep(1)
-        try:
-            stream = video.streams.get_by_itag(q)
-            stream.download(output_path=f"C:/Users/mfair/Documents/vids/{p.title}-{video.author}")
-        except:
-            print(f"Failed to download {video.title} - {video.author}")
-
-
-def download_video(v, q):
-    # q = 22
-    v = YouTube(v)
-    print(f'Downloading: {v.title}')
-    try:
-        stream = v.streams.get_by_itag(q)
-        stream.download(output_path=f"C:/Users/mfair/Documents/vids/{v.author}/")
-    except:
-        print(f"Failed to download {v.title} - {v.author}")
-
-
-while True:
-    url = input("Enter url: ")
-    if "playlist" in url:
-        download_playlist(url, 22)
-    elif "watch?v" in url:
-        download_video(url, 22)
+if __name__ == "__main__":
+    ManagerApp().run()
