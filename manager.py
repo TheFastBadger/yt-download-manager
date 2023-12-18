@@ -11,7 +11,7 @@ def download_playlist(p, q):
         sleep(1)
         try:
             stream = video.streams.get_by_itag(q)
-            stream.download(output_path=f"C:/Users/mfair/Documents/vids/{p.title}-{video.author}")
+            stream.download(output_path=f"/vids/{p.title}-{video.author}")
         except:
             print(f"Failed to download {video.title} - {video.author}")
 
@@ -22,6 +22,6 @@ def download_video(v, q):
     print(f'Downloading: {v.title}')
     try:
         stream = v.streams.get_by_itag(q)
-        stream.download(output_path=f"C:/Users/mfair/Documents/vids/{v.author}/")
+        stream.download(output_path=f"/vids/{v.author}/")
     except:
         print(f"Failed to download {v.title} - {v.author}")

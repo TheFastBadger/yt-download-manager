@@ -1,3 +1,3 @@
 ## YouTube Download Manager
 
-# Warning: do not use in current state, a fix is expected shortly
+Videos will be downloaded to C:/vids/ on windows,
